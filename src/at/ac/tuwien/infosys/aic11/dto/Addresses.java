@@ -1,5 +1,10 @@
 package at.ac.tuwien.infosys.aic11.dto;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Addresses {
     private String id;
     private String street;
@@ -8,6 +13,7 @@ public class Addresses {
     private String door;
     private String zipCode;
 
+    @XmlAttribute(required = true)
     public String getId() {
         return id;
     }
@@ -16,6 +22,7 @@ public class Addresses {
         this.id = id;
     }
 
+    @XmlElement(required = true)
     public String getStreet() {
         return street;
     }
@@ -24,6 +31,7 @@ public class Addresses {
         this.street = street;
     }
 
+    @XmlElement(required = true)
     public String getCity() {
         return city;
     }
@@ -32,6 +40,7 @@ public class Addresses {
         this.city = city;
     }
 
+    @XmlElement(required = true)
     public String getHouse() {
         return house;
     }
@@ -40,6 +49,7 @@ public class Addresses {
         this.house = house;
     }
 
+    @XmlElement(required = true)
     public String getDoor() {
         return door;
     }
@@ -48,6 +58,7 @@ public class Addresses {
         this.door = door;
     }
 
+    @XmlElement(name = "zip_code", required = true)
     public String getZipCode() {
         return zipCode;
     }

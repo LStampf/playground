@@ -2,6 +2,11 @@ package at.ac.tuwien.infosys.aic11.dto;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "credit_request")
 public class CreditRequest {
 
     private Long requestId;
@@ -12,6 +17,7 @@ public class CreditRequest {
     private Customer customer;
     private List<Warrantor> warrantors;
 
+    @XmlAttribute(name = "request_id", required = true)
     public Long getRequestId() {
         return requestId;
     }
@@ -20,6 +26,7 @@ public class CreditRequest {
         this.requestId = requestId;
     }
 
+    @XmlElement(required = true)
     public String getReason() {
         return reason;
     }
@@ -36,6 +43,7 @@ public class CreditRequest {
         this.offer = offer;
     }
 
+    @XmlElement(required = true)
     public Money getMoney() {
         return money;
     }
@@ -44,6 +52,7 @@ public class CreditRequest {
         this.money = money;
     }
 
+    @XmlElement(required = true)
     public Duration getDuration() {
         return duration;
     }
@@ -52,6 +61,7 @@ public class CreditRequest {
         this.duration = duration;
     }
 
+    @XmlElement(required = true)
     public Customer getCustomer() {
         return customer;
     }

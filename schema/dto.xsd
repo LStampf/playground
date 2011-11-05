@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="at.ac.tuwien.infosys.aic11.dto" xmlns:tns="at.ac.tuwien.infosys.aic11.dto" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="addresses" type="tns:addresses"/>
+
+  <xs:element name="bank_transfer" type="tns:bankTransfer"/>
+
+  <xs:element name="cheque" type="tns:cheque"/>
+
+  <xs:element name="credit_request" type="tns:creditRequest"/>
+
+  <xs:element name="customer" type="tns:customer"/>
+
+  <xs:element name="customer_rating" type="tns:customerRating"/>
+
+  <xs:element name="duration" type="tns:duration"/>
+
+  <xs:element name="interest_rate" type="tns:interestRate"/>
+
+  <xs:element name="money" type="tns:money"/>
+
+  <xs:element name="offer" type="tns:offer"/>
+
+  <xs:element name="rating" type="tns:rating"/>
+
+  <xs:element name="warrantor" type="tns:warrantor"/>
+
+  <xs:complexType name="addresses">
+    <xs:sequence>
+      <xs:element name="city" type="xs:string"/>
+      <xs:element name="door" type="xs:string"/>
+      <xs:element name="house" type="xs:string"/>
+      <xs:element name="street" type="xs:string"/>
+      <xs:element name="zip_code" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="bankTransfer">
+    <xs:complexContent>
+      <xs:extension base="tns:disbursementPreference">
+        <xs:sequence>
+          <xs:element name="bank_name" type="xs:string"/>
+          <xs:element name="bic" type="xs:string"/>
+          <xs:element name="iban" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="disbursementPreference" abstract="true">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="cheque">
+    <xs:complexContent>
+      <xs:extension base="tns:disbursementPreference">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="creditRequest">
+    <xs:sequence>
+      <xs:element name="customer" type="tns:customer"/>
+      <xs:element name="duration" type="tns:duration"/>
+      <xs:element name="money" type="tns:money"/>
+      <xs:element name="offer" type="tns:offer" minOccurs="0"/>
+      <xs:element name="reason" type="xs:string"/>
+      <xs:element name="warrantors" type="tns:warrantor" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="request_id" type="xs:long" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="customer">
+    <xs:sequence>
+      <xs:element name="addresses" type="tns:addresses"/>
+      <xs:element name="credit_requests" type="tns:creditRequest" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="disbursement_preference" type="tns:disbursementPreference"/>
+      <xs:element name="first_name" type="xs:string"/>
+      <xs:element name="last_name" type="xs:string"/>
+      <xs:element name="middle_name" type="xs:string"/>
+      <xs:element name="open_balance" type="xs:decimal"/>
+      <xs:element name="rating" type="tns:rating" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="customer_id" type="xs:long" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="rating">
+    <xs:sequence>
+      <xs:element name="customer" type="tns:customer"/>
+      <xs:element name="customer_rating" type="tns:customerRating"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="duration">
+    <xs:sequence>
+      <xs:element name="years" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="money">
+    <xs:sequence>
+      <xs:element name="amount" type="xs:long"/>
+      <xs:element name="currency_code" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="offer">
+    <xs:sequence>
+      <xs:element name="comments" type="xs:string"/>
+      <xs:element name="credit_request" type="tns:creditRequest"/>
+      <xs:element name="interest_rate" type="tns:interestRate"/>
+    </xs:sequence>
+    <xs:attribute name="offer_id" type="xs:long" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="interestRate">
+    <xs:sequence>
+      <xs:element name="rate" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="warrantor">
+    <xs:complexContent>
+      <xs:extension base="tns:customer">
+        <xs:sequence>
+          <xs:element name="warranted_requests" type="tns:creditRequest" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="customerRating">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AAPlus"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AAMinus"/>
+      <xs:enumeration value="APlus"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="AMinus"/>
+      <xs:enumeration value="Defaulting"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

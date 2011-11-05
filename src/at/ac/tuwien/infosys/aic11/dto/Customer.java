@@ -3,6 +3,11 @@ package at.ac.tuwien.infosys.aic11.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Customer {
 
     private Long customerId;
@@ -15,6 +20,7 @@ public class Customer {
     private Addresses addresses;
     private Rating rating;
 
+    @XmlAttribute(name = "customer_id", required = true)
     public Long getCustomerId() {
         return customerId;
     }
@@ -23,6 +29,7 @@ public class Customer {
         this.customerId = customerId;
     }
 
+    @XmlElement(name = "first_name", required = true)
     public String getFirstName() {
         return firstName;
     }
@@ -31,6 +38,7 @@ public class Customer {
         this.firstName = firstName;
     }
 
+    @XmlElement(name = "middle_name", required = true)
     public String getMiddleName() {
         return middleName;
     }
@@ -39,6 +47,7 @@ public class Customer {
         this.middleName = middleName;
     }
 
+    @XmlElement(name = "last_name", required = true)
     public String getLastName() {
         return lastName;
     }
@@ -47,6 +56,7 @@ public class Customer {
         this.lastName = lastName;
     }
 
+    @XmlElement(name = "open_balance", required = true)
     public BigDecimal getOpenBalance() {
         return openBalance;
     }
@@ -55,6 +65,7 @@ public class Customer {
         this.openBalance = openBalance;
     }
 
+    @XmlElement(name = "credit_requests")
     public List<CreditRequest> getCreditRequests() {
         return creditRequests;
     }
@@ -63,6 +74,7 @@ public class Customer {
         this.creditRequests = creditRequests;
     }
 
+    @XmlElement(name = "disbursement_preference", required = true)
     public DisbursementPreference getDisbursementPreference() {
         return disbursementPreference;
     }
@@ -71,6 +83,7 @@ public class Customer {
         this.disbursementPreference = disbursementPreference;
     }
 
+    @XmlElement(required = true)
     public Addresses getAddresses() {
         return addresses;
     }

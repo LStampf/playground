@@ -1,5 +1,10 @@
 package at.ac.tuwien.infosys.aic11.dto;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(namespace = "at.ac.tuwien.infosys.aic11.dto")
 public class Offer {
 
     private Long offerId;
@@ -7,6 +12,7 @@ public class Offer {
     private InterestRate interestRate;
     private CreditRequest creditRequest;
 
+    @XmlAttribute(name = "offer_id", required = true)
     public Long getOfferId() {
         return offerId;
     }
@@ -15,6 +21,7 @@ public class Offer {
         this.offerId = offerId;
     }
 
+    @XmlElement(required = true)
     public String getComments() {
         return comments;
     }
@@ -23,6 +30,7 @@ public class Offer {
         this.comments = comments;
     }
 
+    @XmlElement(name = "interest_rate", required = true)
     public InterestRate getInterestRate() {
         return interestRate;
     }
@@ -31,6 +39,7 @@ public class Offer {
         this.interestRate = interestRate;
     }
 
+    @XmlElement(name = "credit_request", required = true)
     public CreditRequest getCreditRequest() {
         return creditRequest;
     }
