@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Rating {
 
-    private Customer customer;
+    private Long customerId;
     private CustomerRating customerRating;
 
     @XmlElement(required = true)
-    public Customer getCustomer() {
-        return customer;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     @XmlElement(name = "customer_rating", required = true)
