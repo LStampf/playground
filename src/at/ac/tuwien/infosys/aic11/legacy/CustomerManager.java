@@ -31,7 +31,7 @@ public class CustomerManager {
 		a1.setZipCode("1010");
 		
 		Rating r1 = new Rating();
-		r1.setCustomerId(c1.getCustomerId());
+		r1.setCustomer(c1);
 		r1.setCustomerRating(CustomerRating.AA);
 
 		c1.setFirstName("Max");

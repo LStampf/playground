@@ -1,4 +1,4 @@
-package at.ac.tuwien.infosys.aic11.services;
+package at.ac.tuwien.infosys.aic11.services.shipping;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

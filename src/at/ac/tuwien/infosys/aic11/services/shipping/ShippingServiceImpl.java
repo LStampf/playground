@@ -1,4 +1,4 @@
-package at.ac.tuwien.infosys.aic11.services;
+package at.ac.tuwien.infosys.aic11.services.shipping;
 
 import at.ac.tuwien.infosys.aic11.dto.Customer;
 

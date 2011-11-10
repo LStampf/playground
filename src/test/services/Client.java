@@ -8,7 +8,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 import at.ac.tuwien.infosys.aic11.dto.Addresses;
 import at.ac.tuwien.infosys.aic11.dto.Customer;
-import at.ac.tuwien.infosys.aic11.services.ShippingService;
+import at.ac.tuwien.infosys.aic11.services.shipping.ShippingService;
 
 public class Client {
 
