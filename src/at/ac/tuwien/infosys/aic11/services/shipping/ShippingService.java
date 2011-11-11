@@ -1,17 +1,17 @@
 package at.ac.tuwien.infosys.aic11.services.shipping;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 import at.ac.tuwien.infosys.aic11.dto.Customer;
+import at.ac.tuwien.infosys.aic11.dto.Offer;
 
-@Path("shipping")
+@WebService(serviceName = "ShippingService")
 public interface ShippingService {
 
-	@GET
-	@Path("ships")
-	@Produces("application/xml")
-	public Customer ship();
+	//@WebMethod(action="writeAndShipContract")
+	void writeAndShipContract(
+			@WebParam(name="offer")Offer offer, 
+			@WebParam(name="c")Customer c); 
 	
 }
