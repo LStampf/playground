@@ -1,5 +1,7 @@
 package at.ac.tuwien.infosys.aic11.legacy.customerrelations;
 
+import java.util.List;
+
 import at.ac.tuwien.infosys.aic11.dto.Customer;
 
 public class CustomerRelationsApp {
@@ -11,6 +13,10 @@ public class CustomerRelationsApp {
 					+ customer.getCustomerId() + " already taken!");
 		}
 		CustomerDAO.save(customer);
+	}
+
+	public List<Customer> getAllCustomers() {
+		return CustomerDAO.getAll();
 	}
 
 	public Customer getCustomerById(Long id)

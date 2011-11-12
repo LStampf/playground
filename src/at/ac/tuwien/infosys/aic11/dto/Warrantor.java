@@ -18,4 +18,17 @@ public class Warrantor extends Customer {
     public void setWarrantedRequests(List<CreditRequest> warrantedRequests) {
         this.warrantedRequests = warrantedRequests;
     }
+    
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Warrantor[");
+		sb.append("id=" + getCustomerId() + ", ");
+		sb.append("firstName=" + getFirstName() + ", ");
+		sb.append("middleName=" + getMiddleName() + ", ");
+		sb.append("lastName=" + getLastName() + ", ");
+		sb.append("address=" + getAddresses());
+		sb.append("]");
+		return sb.toString();
+	}
 }
