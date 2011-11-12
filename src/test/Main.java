@@ -7,7 +7,7 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.cxf.service.invoker.SingletonFactory;
 
-import at.ac.tuwien.aic11.services.util.JAXWSMethodInvokerWithLogging;
+import at.ac.tuwien.infosys.aic11.services.util.JAXWSMethodInvokerWithLogging;
 
 public class Main {
 

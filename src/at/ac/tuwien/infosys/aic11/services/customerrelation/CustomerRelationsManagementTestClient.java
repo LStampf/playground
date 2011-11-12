@@ -23,8 +23,7 @@ public class CustomerRelationsManagementTestClient {
 
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(CustomerRelationsManagement.class);
-		factory.setAddress("http://localhost:8090/customerRelationsManagement");
-
+		factory.setAddress("http://localhost:8090/CustomerRelationsManagementService");
 		CustomerRelationsManagement customerService = (CustomerRelationsManagement) factory
 				.create();
 

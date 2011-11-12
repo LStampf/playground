@@ -12,13 +12,21 @@ import at.ac.tuwien.infosys.aic11.dto.Customer;
  **/
 
 public class CustomerDAO {
-	private static Hashtable<Long, Customer> data;
+	private Hashtable<Long, Customer> data;
+	private static CustomerDAO instance;
 
-	static {
+	public synchronized static CustomerDAO getInstance() {
+		if (instance == null) {
+			instance = new CustomerDAO();
+		}
+		return instance;
+	}
+
+	public CustomerDAO() {
 		data = new Hashtable<Long, Customer>();
 	}
 
-	public synchronized static List<Customer> getAll() {
+	public synchronized List<Customer> getAll() {
 		List<Customer> ret = new ArrayList<Customer>();
 		for (Customer customer : data.values()) {
 			ret.add(customer);
@@ -26,11 +34,11 @@ public class CustomerDAO {
 		return ret;
 	}
 
-	public synchronized static void save(Customer customer) {
+	public synchronized void save(Customer customer) {
 		data.put(customer.getCustomerId(), customer);
 	}
 
-	public synchronized static Customer get(Long customerId) {
+	public synchronized Customer get(Long customerId) {
 		return data.get(customerId);
 	}
 }

@@ -5,15 +5,15 @@ import java.util.List;
 import at.ac.tuwien.infosys.aic11.dto.Customer;
 import at.ac.tuwien.infosys.aic11.legacy.customerrelations.CustomerAlreadyExistsException;
 import at.ac.tuwien.infosys.aic11.legacy.customerrelations.CustomerDoesNotExistException;
-import at.ac.tuwien.infosys.aic11.legacy.customerrelations.CustomerRelationsApp;
+import at.ac.tuwien.infosys.aic11.legacy.customerrelations.CustomerRelationsLegacyApp;
 
 public class CustomerRelationsManagementImpl implements
 		CustomerRelationsManagement {
 
-	CustomerRelationsApp legacy;
+	CustomerRelationsLegacyApp legacy;
 
 	public CustomerRelationsManagementImpl() {
-		legacy = new CustomerRelationsApp();
+		legacy = new CustomerRelationsLegacyApp();
 	}
 
 	@Override
