@@ -7,7 +7,7 @@ import javax.jws.WebService;
 import at.ac.tuwien.infosys.aic11.dto.CreditRequest;
 import at.ac.tuwien.infosys.aic11.dto.Offer;
 
-@WebService(name = "ContractManagementService", targetNamespace = "at.ac.tuwien.infosys.aic11.services")
+@WebService(name = "ContractManagementService", targetNamespace = "http://at.ac.tuwien.infosys.aic11.services")
 public interface ContractManagement {
 
 	@WebMethod(operationName = "create_offer")

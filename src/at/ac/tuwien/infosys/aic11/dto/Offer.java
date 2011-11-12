@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace = "at.ac.tuwien.infosys.aic11.dto")
+@XmlRootElement
 public class Offer {
 
 	private Long offerId;

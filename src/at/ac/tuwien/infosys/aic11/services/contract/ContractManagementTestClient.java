@@ -1,9 +1,14 @@
 package at.ac.tuwien.infosys.aic11.services.contract;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
+import org.apache.ws.security.handler.WSHandlerConstants;
 
 import at.ac.tuwien.infosys.aic11.dto.Addresses;
 import at.ac.tuwien.infosys.aic11.dto.Cheque;
@@ -21,6 +26,42 @@ public class ContractManagementTestClient {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(ContractManagement.class);
 		factory.setAddress("http://localhost:8091/ContractManagementService");
+
+		Map<String, Object> inProps = new HashMap<String, Object>();
+
+		inProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.TIMESTAMP
+				+ " " + WSHandlerConstants.SIGNATURE + " "
+				+ WSHandlerConstants.ENCRYPT);
+		inProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
+				ClientKeystorePasswordCallback.class.getName());
+		inProps.put(WSHandlerConstants.SIG_PROP_FILE,
+				"keys/clientKeystore.properties");
+		inProps.put(WSHandlerConstants.DEC_PROP_FILE,
+				"keys/clientKeystore.properties");
+
+		WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
+		factory.getInInterceptors().add(wssIn);
+		// factory.getInInterceptors().add(new LoggingInInterceptor());
+
+		Map<String, Object> outProps = new HashMap<String, Object>();
+
+		outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.TIMESTAMP
+				+ " " + WSHandlerConstants.SIGNATURE + " "
+				+ WSHandlerConstants.ENCRYPT);
+		outProps.put(WSHandlerConstants.USER, "clientkey");
+		outProps.put(WSHandlerConstants.ENCRYPTION_USER,
+				"contractmanagementkey");
+		outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
+				ClientKeystorePasswordCallback.class.getName());
+		outProps.put(WSHandlerConstants.SIG_PROP_FILE,
+				"keys/clientKeystore.properties");
+		outProps.put(WSHandlerConstants.ENC_PROP_FILE,
+				"keys/clientKeystore.properties");
+
+		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+		factory.getOutInterceptors().add(wssOut);
+		// factory.getOutInterceptors().add(new LoggingOutInterceptor());
+
 		ContractManagement contractService = (ContractManagement) factory
 				.create();
 

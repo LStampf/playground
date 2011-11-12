@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import at.ac.tuwien.infosys.aic11.dto.Customer;
 
-@WebService(name = "CustomerRelationsManagementService", targetNamespace = "at.ac.tuwien.infosys.aic11.services")
+@WebService(name = "CustomerRelationsManagementService", targetNamespace = "http://at.ac.tuwien.infosys.aic11.services")
 public interface CustomerRelationsManagement {
 
 	@WebMethod(operationName = "get_customer_by_id")
