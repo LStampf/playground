@@ -10,7 +10,7 @@ public class Rating {
 	private Customer customer;
 	private CustomerRating customerRating;
 
-//	@XmlElement(required = true)
+	// @XmlElement(required = true)
 	@XmlTransient
 	public Customer getCustomer() {
 		return customer;
@@ -27,6 +27,16 @@ public class Rating {
 
 	public void setCustomerRating(CustomerRating customerRating) {
 		this.customerRating = customerRating;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Rating[");
+		sb.append("customer=" + customer + ", ");
+		sb.append("customerRating=" + customerRating);
+		sb.append("]");
+		return sb.toString();
 	}
 
 }

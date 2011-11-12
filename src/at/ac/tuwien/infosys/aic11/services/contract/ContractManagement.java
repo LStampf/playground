@@ -15,10 +15,15 @@ public interface ContractManagement {
 			@WebParam(name = "credit_request") CreditRequest creditRequest)
 			throws ContractManagementException;
 
-	@WebMethod(operationName = "delete_offer")
-	void deleteOffer(@WebParam(name = "offer") Offer offer);
+	@WebMethod(operationName = "accept_offer")
+	void acceptOffer(@WebParam(name = "offer") Offer offer)
+			throws ContractManagementException;
+
+	@WebMethod(operationName = "decline_offer")
+	void declineOffer(@WebParam(name = "offer") Offer offer)
+			throws ContractManagementException;
 
 	@WebMethod(operationName = "update_offer")
-	void updateOffer(@WebParam(name = "offer") Offer offer,
-			@WebParam(name = "credit_request") CreditRequest creditRequest);
+	void updateOffer(@WebParam(name = "offer") Offer offer)
+			throws ContractManagementException;
 }

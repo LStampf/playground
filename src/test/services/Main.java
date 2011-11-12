@@ -21,13 +21,6 @@ public class Main {
 		Endpoint.publish("http://localhost:9080/shipping",
 				new ShippingServiceImpl());
 
-		// Rating
-		JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
-		sf.setResourceClasses(RatingImpl.class);
-		sf.setBindingId(JAXRSBindingFactory.JAXRS_BINDING_ID);
-		sf.setAddress("http://localhost:9080/");
-		sf.create();
-
 		LOGGER.info("Services started.");
 	}
 

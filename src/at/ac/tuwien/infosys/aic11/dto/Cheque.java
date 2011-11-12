@@ -16,4 +16,13 @@ public class Cheque extends DisbursementPreference {
     public void setName(String name) {
         this.name = name;
     }
+    
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Cheque[");
+		sb.append("name=" + name);
+		sb.append("]");
+		return sb.toString();
+	}
 }
