@@ -27,6 +27,14 @@ public class CustomerRelationsManagementTestClient {
 		CustomerRelationsManagement customerService = (CustomerRelationsManagement) factory
 				.create();
 
+		try {
+			logger.info("Initial size: " + customerService.getCustomerById(1L).getFirstName());
+		} catch (CustomerRelationsManagementException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
 		Customer c = new Customer();
 		c.setCustomerId(1L);
 

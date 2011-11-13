@@ -1,6 +1,7 @@
 package at.ac.tuwien.infosys.aic11.dto;
 
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,6 +19,10 @@ public class CreditRequest {
 	private Customer customer;
 	private List<Warrantor> warrantors;
 
+	public CreditRequest() {
+		this.warrantors = new Vector<Warrantor>();
+	}
+	
 	@XmlAttribute(name = "request_id", required = true)
 	public Long getRequestId() {
 		return requestId;
