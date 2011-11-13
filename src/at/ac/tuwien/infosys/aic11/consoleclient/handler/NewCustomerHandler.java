@@ -35,7 +35,7 @@ public class NewCustomerHandler {
 		
 		writer.printf("Customer lastnameÊ[Mustermann]: ");
 		line = reader.readLine();
-		customer.setLastName(line.length() > 0 ? line : "Musetermann");
+		customer.setLastName(line.length() > 0 ? line : "Mustermann");
 		
 		writer.printf("Customer streetÊ[Street 1]: ");
 		line = reader.readLine();
@@ -49,7 +49,7 @@ public class NewCustomerHandler {
 		line = reader.readLine();
 		address.setCity(line.length() > 0 ? line : "Vienna");
 		
-		writer.printf("Customer disbursement preference (Bank transfer | Cheque) [B]");
+		writer.printf("Customer disbursement preference (Bank transfer | Cheque) [B]: ");
 		line = reader.readLine();
 		if( line.length() > 0 ) {
 			if( line.equals("B") ) {

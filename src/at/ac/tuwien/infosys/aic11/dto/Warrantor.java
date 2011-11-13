@@ -1,6 +1,7 @@
 package at.ac.tuwien.infosys.aic11.dto;
 
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,6 +11,10 @@ public class Warrantor extends Customer {
 
     private List<CreditRequest> warrantedRequests;
 
+    public Warrantor() {
+		this.warrantedRequests = new Vector<CreditRequest>();
+	}
+    
     @XmlElement(name = "warranted_requests")
     public List<CreditRequest> getWarrantedRequests() {
         return warrantedRequests;

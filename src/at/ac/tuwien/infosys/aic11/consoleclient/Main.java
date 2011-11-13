@@ -2,6 +2,8 @@ package at.ac.tuwien.infosys.aic11.consoleclient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.Vector;
 
 import at.ac.tuwien.infosys.aic11.consoleclient.command.Command;
 import at.ac.tuwien.infosys.aic11.consoleclient.command.CommandException;
@@ -12,6 +14,7 @@ import at.ac.tuwien.infosys.aic11.consoleclient.handler.ShippingHandler;
 import at.ac.tuwien.infosys.aic11.dto.CreditRequest;
 import at.ac.tuwien.infosys.aic11.dto.Duration;
 import at.ac.tuwien.infosys.aic11.dto.Money;
+import at.ac.tuwien.infosys.aic11.dto.Warrantor;
 
 public class Main {
 	
@@ -66,6 +69,19 @@ public class Main {
 						System.out.println("No offer created. Use 'pcr' first");
 						continue;
 					}
+					
+					// setting warrantors
+					for(Warrantor warrantor : creditRequest.getWarrantors()) {
+						if( warrantor.getCreditRequests() == null ) {
+							warrantor.setCreditRequests(new Vector<CreditRequest>());
+						}
+						warrantor.getCreditRequests().add(creditRequest);
+					}
+					
+					// adapting balance
+					creditRequest.getCustomer().setOpenBalance( 
+							new BigDecimal(creditRequest.getCustomer().getOpenBalance().doubleValue() + 
+							creditRequest.getMoney().getAmount()));
 					
 					pcrHandler.acceptOffer(creditRequest);
 					System.out.println("Offer accepted. Shipping initiated");
