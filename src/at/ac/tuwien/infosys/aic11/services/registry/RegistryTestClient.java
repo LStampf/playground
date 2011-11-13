@@ -37,8 +37,10 @@ public class RegistryTestClient {
 			customer.setAddress(adr);
 
 			Object[] objs = client.invoke("start_money_transfer_process",
-					cheque2, m, customer);
+					cheque, m, customer);
 
+			System.out.println("ASD");
+			
 		} catch (InvalidParameterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

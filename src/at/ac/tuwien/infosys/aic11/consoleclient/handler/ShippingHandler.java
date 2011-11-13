@@ -44,8 +44,10 @@ public class ShippingHandler {
 		Addresses externalAddresses = new Addresses();
 		DisbursementPreference externalDisbursement = null; 
 		Rating externalRating = new Rating();
-		
-		at.ac.tuwien.infosys.aic11.services.registry.DisbursementPreference registryDisbursement = null;
+
+		at.ac.tuwien.infosys.aic11.services.Customer registryCustomer = new at.ac.tuwien.infosys.aic11.services.Customer();
+		at.ac.tuwien.infosys.aic11.services.Address registryAddresses = new at.ac.tuwien.infosys.aic11.services.Address();
+		at.ac.tuwien.infosys.aic11.services.Money registryMoney = new at.ac.tuwien.infosys.aic11.services.Money();
 		
 		// mapping
 		switch( offer.getCreditRequest().getCustomer().getRating().getCustomerRating() )
@@ -69,22 +71,11 @@ public class ShippingHandler {
 			((BankTransfer)externalDisbursement).setIban(
 					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getIban());
 			
-			registryDisbursement = new at.ac.tuwien.infosys.aic11.services.registry.BankTransfer();
-			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setBankName(
-					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBankName());
-			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setBic(
-					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBic());
-			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setIban(
-					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getIban());
 		}
 		else if( offer.getCreditRequest().getCustomer().getDisbursementPreference() instanceof 
 				at.ac.tuwien.infosys.aic11.dto.Cheque) {
 			externalDisbursement = new Cheque();
 			((Cheque)externalDisbursement).setName(
-					((at.ac.tuwien.infosys.aic11.dto.Cheque)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getName());
-			
-			registryDisbursement = new at.ac.tuwien.infosys.aic11.services.registry.Cheque();
-			((at.ac.tuwien.infosys.aic11.services.registry.Cheque)registryDisbursement).setName(
 					((at.ac.tuwien.infosys.aic11.dto.Cheque)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getName());
 		}
 		
@@ -95,6 +86,12 @@ public class ShippingHandler {
 		externalAddresses.setStreet(offer.getCreditRequest().getCustomer().getAddresses().getStreet());
 		externalAddresses.setZipCode(offer.getCreditRequest().getCustomer().getAddresses().getZipCode());
 		
+		registryAddresses.setCity(offer.getCreditRequest().getCustomer().getAddresses().getCity());
+		registryAddresses.setDoor(offer.getCreditRequest().getCustomer().getAddresses().getDoor());
+		registryAddresses.setHouse(offer.getCreditRequest().getCustomer().getAddresses().getHouse());
+		registryAddresses.setStreet(offer.getCreditRequest().getCustomer().getAddresses().getStreet());
+		registryAddresses.setPostalCode(offer.getCreditRequest().getCustomer().getAddresses().getZipCode());
+		
 		externalCustomer.setCustomerId( offer.getCreditRequest().getCustomer().getCustomerId() );
 		externalCustomer.setAddresses( externalAddresses );
 		externalCustomer.setDisbursementPreference( externalDisbursement );
@@ -104,12 +101,21 @@ public class ShippingHandler {
 		externalCustomer.setOpenBalance( offer.getCreditRequest().getCustomer().getOpenBalance() );
 		externalCustomer.setRating( externalRating );
 		
+		registryCustomer.setAddress(registryAddresses);
+		registryCustomer.setCustomerId(offer.getCreditRequest().getCustomer().getCustomerId());
+		registryCustomer.setFirstName( offer.getCreditRequest().getCustomer().getFirstName() );
+		registryCustomer.setLastName( offer.getCreditRequest().getCustomer().getLastName() );
+		registryCustomer.setMiddleName( offer.getCreditRequest().getCustomer().getMiddleName() );
+		
 		Duration externalDuration = new Duration();
 		externalDuration.setYears( offer.getCreditRequest().getDuration().getYears() );
 		
 		Money externalMoney = new Money();
 		externalMoney.setAmount( offer.getCreditRequest().getMoney().getAmount() );
 		externalMoney.setCurrencyCode( offer.getCreditRequest().getMoney().getCurrencyCode() );
+		
+		registryMoney.setAmount(offer.getCreditRequest().getMoney().getAmount());
+		registryMoney.setCurrencyCode(offer.getCreditRequest().getMoney().getCurrencyCode());
 		
 		externalCreditRequest.setCustomer( externalCustomer );
 		externalCreditRequest.setDuration( externalDuration );
@@ -124,13 +130,31 @@ public class ShippingHandler {
 		externalOffer.setInterestRate( externalRate );
 		
 		IRegistryService registry = new RegistryService().getRegistryService();
-		WsdlEndpoint endpoint = registry.query(registryDisbursement);
-		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(endpoint.getLocation() + "?wsdl");
-
-		// TODO: mapping fault
-		//Object[] objs = client.invoke("start_money_transfer_process",
-		//		registryDisbursement, externalMoney, externalCustomer);
+		Client client = null;
+		
+		if( offer.getCreditRequest().getCustomer().getDisbursementPreference() instanceof 
+				at.ac.tuwien.infosys.aic11.dto.Cheque ) {
+			at.ac.tuwien.infosys.aic11.services.Cheque cheque = new at.ac.tuwien.infosys.aic11.services.Cheque();
+			cheque.setName(((at.ac.tuwien.infosys.aic11.dto.Cheque)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getName());
+				
+			WsdlEndpoint endpoint = registry.query(new at.ac.tuwien.infosys.aic11.services.registry.Cheque());
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			client = dcf.createClient(endpoint.getLocation() + "?wsdl");
+			
+			client.invoke("start_money_transfer_process", cheque, registryMoney, registryCustomer);
+		}
+		else {
+			at.ac.tuwien.infosys.aic11.services.BankTransfer bankTransfer = new at.ac.tuwien.infosys.aic11.services.BankTransfer();
+			bankTransfer.setBankName(((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBankName());
+			bankTransfer.setBic(((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBic());
+			bankTransfer.setIban(((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getIban());
+	
+			WsdlEndpoint endpoint = registry.query(new at.ac.tuwien.infosys.aic11.services.registry.BankTransfer());
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			client = dcf.createClient(endpoint.getLocation() + "?wsdl");
+			
+			client.invoke("start_money_transfer_process", bankTransfer, registryMoney, registryCustomer);
+		}
 		
 		Future<?> future = this.shippingService.shipContractAsync(externalOffer, this.callback);
 		while (!future.isDone()) {
