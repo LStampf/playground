@@ -2,6 +2,15 @@ package at.ac.tuwien.infosys.aic11.consoleclient.handler;
 
 import java.util.concurrent.Future;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+
+import at.ac.tuwien.infosys.aic11.services.Address;
+import at.ac.tuwien.infosys.aic11.services.registry.IRegistryService;
+import at.ac.tuwien.infosys.aic11.services.registry.InvalidParameterException;
+import at.ac.tuwien.infosys.aic11.services.registry.RegistryService;
+import at.ac.tuwien.infosys.aic11.services.registry.WsdlEndpoint;
+
 import services.aic11.infosys.tuwien.ac.at.ShipContractCallback;
 import services.aic11.infosys.tuwien.ac.at.Shipping;
 import services.aic11.infosys.tuwien.ac.at.ShippingService;
@@ -28,13 +37,15 @@ public class ShippingHandler {
 		this.shippingService = new ShippingService().getShippingPort();
 	}
 	
-	public void handle(at.ac.tuwien.infosys.aic11.dto.Offer offer) throws InterruptedException {
+	public void handle(at.ac.tuwien.infosys.aic11.dto.Offer offer) throws Exception {
 		Offer externalOffer = new Offer();
 		CreditRequest externalCreditRequest = new CreditRequest();
 		Customer externalCustomer = new Customer();
 		Addresses externalAddresses = new Addresses();
 		DisbursementPreference externalDisbursement = null; 
 		Rating externalRating = new Rating();
+		
+		at.ac.tuwien.infosys.aic11.services.registry.DisbursementPreference registryDisbursement = null;
 		
 		// mapping
 		switch( offer.getCreditRequest().getCustomer().getRating().getCustomerRating() )
@@ -57,11 +68,23 @@ public class ShippingHandler {
 					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBic());
 			((BankTransfer)externalDisbursement).setIban(
 					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getIban());
+			
+			registryDisbursement = new at.ac.tuwien.infosys.aic11.services.registry.BankTransfer();
+			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setBankName(
+					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBankName());
+			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setBic(
+					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getBic());
+			((at.ac.tuwien.infosys.aic11.services.registry.BankTransfer)registryDisbursement).setIban(
+					((at.ac.tuwien.infosys.aic11.dto.BankTransfer)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getIban());
 		}
 		else if( offer.getCreditRequest().getCustomer().getDisbursementPreference() instanceof 
 				at.ac.tuwien.infosys.aic11.dto.Cheque) {
 			externalDisbursement = new Cheque();
 			((Cheque)externalDisbursement).setName(
+					((at.ac.tuwien.infosys.aic11.dto.Cheque)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getName());
+			
+			registryDisbursement = new at.ac.tuwien.infosys.aic11.services.registry.Cheque();
+			((at.ac.tuwien.infosys.aic11.services.registry.Cheque)registryDisbursement).setName(
 					((at.ac.tuwien.infosys.aic11.dto.Cheque)offer.getCreditRequest().getCustomer().getDisbursementPreference()).getName());
 		}
 		
@@ -99,6 +122,15 @@ public class ShippingHandler {
 		InterestRate externalRate = new InterestRate();
 		externalRate.setRate( offer.getInterestRate().getRate() );
 		externalOffer.setInterestRate( externalRate );
+		
+		IRegistryService registry = new RegistryService().getRegistryService();
+		WsdlEndpoint endpoint = registry.query(registryDisbursement);
+		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+		Client client = dcf.createClient(endpoint.getLocation() + "?wsdl");
+
+		// TODO: mapping fault
+		//Object[] objs = client.invoke("start_money_transfer_process",
+		//		registryDisbursement, externalMoney, externalCustomer);
 		
 		Future<?> future = this.shippingService.shipContractAsync(externalOffer, this.callback);
 		while (!future.isDone()) {

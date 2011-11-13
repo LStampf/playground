@@ -49,18 +49,33 @@ public class NewCustomerHandler {
 		line = reader.readLine();
 		address.setCity(line.length() > 0 ? line : "Vienna");
 		
-		writer.printf("Customer disbursement preference (Bank transfer | Cheque) [B]: ");
+		writer.printf("Customer disbursement preference (Bank transfer | Cheque) [C]: ");
 		line = reader.readLine();
-		if( line.length() > 0 ) {
-			if( line.equals("B") ) {
-				customer.setDisbursementPreference(new BankTransfer());
-			}
-			else {
-				customer.setDisbursementPreference(new Cheque());
-			}
+		if( line.equals("B") ) {
+			BankTransfer disbursement = new BankTransfer();
+			
+			writer.printf("IBAN [01234]: ");
+			line = reader.readLine();
+			disbursement.setIban(line.length() > 0 ? line : "01234");
+			
+			writer.printf("BIC [01234]: ");
+			line = reader.readLine();
+			disbursement.setBic(line.length() > 0 ? line : "01234");
+			
+			writer.printf("Bank name [Bank 101]: ");
+			line = reader.readLine();
+			disbursement.setIban(line.length() > 0 ? line : "Bank 101");
+			
+			customer.setDisbursementPreference(disbursement);
 		}
 		else {
-			customer.setDisbursementPreference(new BankTransfer());
+			Cheque disbursement = new Cheque();
+			
+			writer.printf("Cheque name [Max Muster]: ");
+			line = reader.readLine();
+			disbursement.setName(line.length() > 0 ? line : "Max Muster");
+			
+			customer.setDisbursementPreference(disbursement);
 		}
 		customer.setOpenBalance(new BigDecimal(0.0f));
 		customer.setAddresses(address);
